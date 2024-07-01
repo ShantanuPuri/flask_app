@@ -1,0 +1,77 @@
+{
+    "family": "flask-app-task",
+    "containerDefinitions": [
+        {
+            "name": "flask_app",
+            "image": "public.ecr.aws/n2w0j8l6/flask_app2-flask_app",
+            "cpu": 1024,
+            "memory": 3072,
+            "portMappings": [
+                {
+                    "name": "flask_app-5000-tcp",
+                    "containerPort": 5000,
+                    "hostPort": 5000,
+                    "protocol": "tcp",
+                    "appProtocol": "http"
+                }
+            ],
+            "essential": true,
+            "command": [
+                "gunicorn",
+                "--timeout",
+                "120",
+                "-w",
+                "4",
+                "-b",
+                "0.0.0.0:5000",
+                "app:app"
+            ],
+            "environment": [
+                {
+                    "name": "FLASK_APP",
+                    "value": "app.py"
+                },
+                {
+                    "name": "FLASK_ENV",
+                    "value": "production"
+                },
+                {
+                    "name": "JWT_SECRET_KEY",
+                    "value": "secret key do not share"
+                },
+                {
+                    "name": "SQLALCHEMY_DATABASE_URI",
+                    "value": "mysql+pymysql://flask_user:*snuggy_14@mysql_db/flask_app_db"
+                },
+                {
+                    "name": "FLASK_RUN_HOST",
+                    "value": "0.0.0.0"
+                }
+            ],
+            "mountPoints": [],
+            "volumesFrom": [],
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-group": "/ecs/flask_app_logs",
+                    "awslogs-create-group": "true",
+                    "awslogs-region": "us-east-1",
+                    "awslogs-stream-prefix": "flask_app"
+                },
+                "secretOptions": []
+            },
+            "systemControls": []
+        }
+    ],
+    "executionRoleArn": "arn:aws:iam::339713055661:role/ecsTaskExecutionRole",
+    "networkMode": "awsvpc",
+    "requiresCompatibilities": [
+        "FARGATE"
+    ],
+    "cpu": "1024",
+    "memory": "3072",
+    "runtimePlatform": {
+        "cpuArchitecture": "ARM64",
+        "operatingSystemFamily": "LINUX"
+    }
+}

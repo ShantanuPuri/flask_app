@@ -1,0 +1,6 @@
+__pycache__
+*.pyc
+instance
+.env
+test.json
+task_details.json

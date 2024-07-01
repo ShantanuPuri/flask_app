@@ -1,0 +1,20 @@
+# Use a MySQL base image
+FROM mysql:8.0
+
+# Environment variables
+ENV MYSQL_ROOT_PASSWORD=root_password
+ENV MYSQL_DATABASE=flask_app_db
+ENV MYSQL_USER=flask_user
+ENV MYSQL_PASSWORD="*snuggy_14"
+
+# Copy custom MySQL configuration
+COPY mysql/my.cnf /etc/mysql/my.cnf
+
+# Ensure MySQL creates the socket in the expected location
+RUN mkdir -p /var/run/mysqld \
+    && chown -R mysql:mysql /var/run/mysqld
+
+# Expose the MySQL default port
+EXPOSE 3306
+
+CMD ["mysqld"]
