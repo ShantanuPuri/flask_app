@@ -2,12 +2,13 @@
 FROM python:3.8-slim
 
 # Set environment variables
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFERED 1
+# ENV PYTHONDONTWRITEBYTECODE 1
+# ENV PYTHONUNBUFFERED 1
 
 # Install system dependencies
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
+       wget \
        pkg-config \
        gcc \
        python3-dev \
@@ -39,4 +40,4 @@ RUN apt-get update && apt-get install -y wget \
     && chmod +x /usr/local/bin/wait-for-it.sh
 
 # Run Gunicorn server
-CMD ["wait-for-it.sh", "mysql_db:3306", "--", "gunicorn", "-w", "4", "-b", "0.0.0.0:5000", "app:app"]
+CMD ["wait-for-it.sh", "mysql-container:3306", "--", "gunicorn", "-w", "4", "-b", "0.0.0.0:5000", "app:app"]

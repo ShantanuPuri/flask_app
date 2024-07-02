@@ -4,3 +4,4 @@ instance
 .env
 test.json
 task_details.json
+ecs-params.yml

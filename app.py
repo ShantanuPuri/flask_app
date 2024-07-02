@@ -9,7 +9,7 @@ import os
 
 app = Flask(__name__)
 app.config['DEBUG'] = True
-app.config['SQLALCHEMY_DATABASE_URI'] =  'mysql+pymysql://root:root_password@mysql_db/flask_app_db'
+app.config['SQLALCHEMY_DATABASE_URI'] =  'mysql+pymysql://flask_user:*snuggy_14@mysql-container/flask_app_db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['JWT_SECRET_KEY'] = 'secret key do not share'
 

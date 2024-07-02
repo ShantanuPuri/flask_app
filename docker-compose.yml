@@ -1,40 +1,30 @@
-version: '3.8'
+version: '3'
 services:
-  flask-app:
-    image: 339713055661.dkr.ecr.us-east-1.amazonaws.com/employee-flask:latest
-    build:
-      context: .
-      dockerfile: Dockerfile
+  flask-container:
+    container_name: flask-container
+    image: public.ecr.aws/n2w0j8l6/employee-flask:latest
     ports:
       - "5000:5000"
-    depends_on:
-      mysql_db:
-        condition: service_healthy
-    container_name: flask-app
     environment:
-      MYSQL_HOST: mysql_db
-      MYSQL_USER: root
-      MYSQL_PASSWORD: root_password
+      FLASK_ENV: production
+      MYSQL_HOST: mysql-container
+      MYSQL_USER: flask_user
+      MYSQL_PASSWORD: "*snuggy_14"
       MYSQL_DATABASE: flask_app_db
 
-  mysql_db:
-    image: 339713055661.dkr.ecr.us-east-1.amazonaws.com/mysql_db:latest
-    build:
-      context: .
-      dockerfile: mysql/Dockerfile.mysql
-    container_name: mysql_db
+  mysql-container:
+    container_name: mysql-container
+    image: public.ecr.aws/n2w0j8l6/mysql_db:latest
+    ports:
+      - "3306:3306"
     environment:
       MYSQL_ROOT_PASSWORD: root_password
       MYSQL_DATABASE: flask_app_db
       MYSQL_USER: flask_user
       MYSQL_PASSWORD: "*snuggy_14"
     volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
       - mysql_data:/var/lib/mysql
-    ports:
-      - "3306:3306"
-    healthcheck:
-      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
-      timeout: 20s
-      retries: 10
+
 volumes:
   mysql_data:

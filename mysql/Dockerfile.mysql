@@ -12,7 +12,8 @@ COPY mysql/my.cnf /etc/mysql/my.cnf
 
 # Ensure MySQL creates the socket in the expected location
 RUN mkdir -p /var/run/mysqld \
-    && chown -R mysql:mysql /var/run/mysqld
+    && chown -R mysql:mysql /var/run/mysqld \
+    && chmod 777 /var/run/mysqld
 
 # Expose the MySQL default port
 EXPOSE 3306
